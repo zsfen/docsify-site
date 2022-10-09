@@ -2,13 +2,13 @@
 
 <!--![logo](./images/icon.svg)-->
 
-# 我的JAVA知识图谱 <small>1.0.0</small>
+# 我的JAVA知识图谱  
 
-> 业精于勤荒于嬉，行成于思毁于随.
+> 路漫漫其修远兮,吾将上下而求索.
 
-- 简单，轻量级
-- 不用构建静态htnl文件
-- 多种主题
+- JAVA基础学习
+- 通用代码使用
+- 中间件使用
 
 [GitHub](https://github.com/zsfen/docsify-web)
 [Get Started](README)
