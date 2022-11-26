@@ -402,16 +402,16 @@ db.表名.aggregate({$group:{_id:'$city',count1:{$sum:'$num'},count2:{$sum:'$age
 4、过滤，求和
 db.表名.aggregate([
   { $match: {"datetime":NumberLong(2021020821)},
-  {$group:{_id:{"datetime": "$datetime"}, count:{$sum:"$pon"}}}
+  {$group:{_id:{"datetime": "$date"}, count:{$sum:"$pon"}}}
 ])
 
 例子：
 db表名.aggregate([{$match:{"task":NumberLong(1620720591),"date":"20210521"}},{$group:{"_id":"$td",total:{$sum:"$task"}}}])
-db.表名.aggregate([{$match:{"date":NumberLong(20211201)}},{$group:{"_id":"$areacode",total:{$sum:"$pon"},total2:{$sum:"$Count"}}}])
+db.表名.aggregate([{$match:{"date":NumberLong(20211201)}},{$group:{"_id":"$area",total:{$sum:"$pon"},total2:{$sum:"$Count"}}}])
 
-db.表名.aggregate([{$match:{"date":NumberLong(20210430)}},{$group:{"_id":"$areacode",total:{$sum:"$pon"}}}])
-db.表名.aggregate([{$match:{"date":{$lte:NumberLong(20210429),$gte:NumberLong(20210429)}}},{$group:{"_id":"$areacode",total:{$sum:"$Count"}}}])
-db.表名.aggregate([{$group:{_id:{"BrasIp":"$BrasIp","countycode":"$countycode"}}}])
+db.表名.aggregate([{$match:{"date":NumberLong(20210430)}},{$group:{"_id":"$area",total:{$sum:"$pon"}}}])
+db.表名.aggregate([{$match:{"date":{$lte:NumberLong(20210429),$gte:NumberLong(20210429)}}},{$group:{"_id":"$area",total:{$sum:"$Count"}}}])
+db.表名.aggregate([{$group:{_id:{"Bras":"$Bras","county":"$county"}}}])
 排序：
 db.表名.aggregate([{$match:{"date_time" :{$gte:20221021,$lte:20221030}}},{$group:{_id:{"time":"$date_time", "area_code" : "$code",},count:{$sum:"$users"}}},{$sort : { "_id.date_time" : -1}}])
 加上sort，注意：sort要排在group后面或者聚合函数的最后，排序才能生效
@@ -499,12 +499,12 @@ csv文件导入
 var col = [];
 db.getCollection('A表').find({}).forEach(function (x) {
     var deviceId=x._id;
-    col.push(deviceId);
+    col.push(Id);
     if(col.length>=1000){
        var cursor= db.getCollection("B表").find({"_id":{$in:col}})
        while(cursor.hasNext()){
         var obj=cursor.next();
-        print(obj.deviceId);
+        print(obj.Id);
         }
         col=[];
     }
@@ -512,7 +512,7 @@ db.getCollection('A表').find({}).forEach(function (x) {
       var cursor= db.getCollection("B表").find({"_id":{$in:col}})
        while(cursor.hasNext()){
         var obj=cursor.next();
-        print(obj.deviceId+"");
+        print(obj.Id+"");
         }
         col=[];
    }});
@@ -536,14 +536,14 @@ var result = testDB.getCollection('testSrcCollection').find({"version" : "-"});
 while(result.hasNext()){
 
 testDB.testDestCollection_20211120.insert(result.next());
-var testDB = connect("192.168.1.101:27027,192.168.1.102:27017,192.168.1.103:27027/test?replicaSet=xxx").getSisterDB("test");
+var testDB = connect("ip1:27027,ip2:27017,ip3:27027/test?replicaSet=xxx").getSisterDB("test");
 
 userDB.auth("usernmae", "passwd");
 
 var t_user = userDB.getCollection("T_USER");
-var testDB = connect("user:passwd@192.168.1.101:27027,192.168.1.102:27017,192.168.1.103:27027/test?replicaSet=xxx&authSource=test");
+var testDB = connect("user:passwd@ip1:27027,ip2:27017,ip3:27027/test?replicaSet=xxx&authSource=test");
 
-var t_user = userDB.getCollection("T_USER");
+var t_user = userDB.getCollection("USER");
 
 var ts=userDB.getCollectionNames();
 ```
