@@ -72,10 +72,9 @@ bin/flume-ng agent --conf conf --conf-file example.conf --name a1 -Dflume.root.l
 
 ```java
 public class testSource extends KafkaSource {
-    @Override
-	
+    @Overrid
     public synchronized void configure(Context context) {
-        String apiConfig = context.getString("api", "test");
+        String config = context.getString("config", "test");
         
         super.configure(context);
     }
@@ -93,7 +92,7 @@ public class testSource extends KafkaSource {
 ```java
     @Override
     public void configure(Context context) {
-        String api = context.getString("api", "apis");
+        String config = context.getString("config", "configs");
         
 ```
 - start
@@ -102,7 +101,7 @@ public class testSource extends KafkaSource {
 ```java
    @Override
     public void start() {
-        loggers.info("Start {}...", this);
+        log.info("Start {}...", this);
         this.sinkCounter.start();
         super.start();
         this.pathController.setBaseDirectory(this.directory);
@@ -117,7 +116,7 @@ public class testSource extends KafkaSource {
 ```java
     public Status process() throws EventDeliveryException {
         if (this.shouldRotate) {
-            logger.debug("time to rotate {}", this.pathController.getCurrentFile());
+            log.debug("otate {}", this.pathController.getCurrentFile());
            
 ```
 s
