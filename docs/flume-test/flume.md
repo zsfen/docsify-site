@@ -56,17 +56,18 @@ a1.sinks.k1.channel = c1          #与sink k1绑定的channel有一个，叫做c
 - ### 启动命令
 
 ```
+1、普通启动命令
 bin/flume-ng agent --conf conf --conf-file example.conf --name a1 -Dflume.root.logger=INFO,console 
 这里就是通过name指定了组件a1进行启动，
+2、cdh启动
 
 ```
 
 
 ## **代码详解**
-> flume逻辑是 获取kafka作为source,文件file作为最终的输出，中间对数据进行了处理，包括上传到FTP、写入到mongo。
-
+> 对flume客户端代码进行继承重写，自定义数据的输入和输出方式，如下代码，是对kafka的source和sink进行了继承。
 - ### kafkaSource--Sink
-- #### （1).继承kafkaSource,覆盖源码配置
+- #### （1)继承kafkaSource,覆盖源码配置
 
 >重新加载配置文件里kafka相关配置,这里configure方法是配置相关的方法
 
@@ -74,16 +75,16 @@ bin/flume-ng agent --conf conf --conf-file example.conf --name a1 -Dflume.root.l
 public class testSource extends KafkaSource {
     @Overrid
     public synchronized void configure(Context context) {
-        String config = context.getString("config", "test");
+	    //config是配置文件的名称，获取的configContext配置文件的名称，需要对文件进行读取获取内容
+        String configContext = context.getString("config", "test");
         
-        super.configure(context);
+        super.configure(configContext);
     }
 }
 
 ```
 
-- #### （2).Sink继承AbstractSink
-> 负责读取channel里的event数据，存储为CSV格式文件，并上传到FTP上。
+- #### （2)Sink继承AbstractSink
 
 **类包含为 configure(Context)、start（）、process()方法**
 - configure(Context)
@@ -119,7 +120,7 @@ public class testSource extends KafkaSource {
             log.debug("otate {}", this.pathController.getCurrentFile());
            
 ```
-s
+
 
 
 
